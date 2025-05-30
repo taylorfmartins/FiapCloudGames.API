@@ -2,7 +2,6 @@
 using FiapCloudGames.Core.Entities;
 using FiapCloudGames.Core.Repositories;
 using FiapCloudGames.Core.Services;
-using Microsoft.AspNetCore.Http;
 using System.Text.RegularExpressions;
 
 namespace FiapCloudGames.Application.Sevices
@@ -16,6 +15,37 @@ namespace FiapCloudGames.Application.Sevices
         {
             _userRepository = userRepository;
             _encryptionService = encryptionService;
+        }
+
+        public async Task<List<User>> GetAll() => await _userRepository.GetAllAsync();
+
+        public async Task<User> GetById(int id) => await _userRepository.GetAsync(id);
+
+        public async Task<User> CreateUserAsync(UserCreateDto userDto, string role = "user")
+        {
+            if (string.IsNullOrEmpty(userDto.Name))
+                throw new ArgumentException("Nome do usuário não pode estar em branco");
+
+            if (!IsValidEmail(userDto.Email))
+                throw new ArgumentException("Formato de e-mail inválido");
+
+            if (!IsValidPassword(userDto.Password))
+                throw new ArgumentException("A senha deve ter no mínimo 8 caracteres, incluindo letras maiúsculas, minúsculas, números e caracteres especiais");
+
+            User user = new User()
+            {
+                Name = userDto.Name,
+                Email = userDto.Email,
+                PasswordHash = _encryptionService.Encrypt(userDto.Password),
+                Role = role
+            };
+
+            return await _userRepository.AddAsync(user);
+        }
+
+        public async Task<bool> DeleteUserAsync(int id)
+        {
+            return await _userRepository.DeleteAsync(id);
         }
 
         private bool IsValidEmail(string email)
@@ -54,33 +84,6 @@ namespace FiapCloudGames.Application.Sevices
                 return false;
 
             return true;
-        }
-
-        public async Task<User> CreateUserAsync(UserCreateDto userDto, string role = "user")
-        {
-            if (string.IsNullOrEmpty(userDto.Name))
-                throw new ArgumentException("Nome do usuário não pode estar em branco");
-
-            if (!IsValidEmail(userDto.Email))
-                throw new ArgumentException("Formato de e-mail inválido");
-
-            if (!IsValidPassword(userDto.Password))
-                throw new ArgumentException("A senha deve ter no mínimo 8 caracteres, incluindo letras maiúsculas, minúsculas, números e caracteres especiais");
-
-            User user = new User()
-            {
-                Name = userDto.Name,
-                Email = userDto.Email,
-                PasswordHash = _encryptionService.Encrypt(userDto.Password),
-                Role = role
-            };
-
-            return await _userRepository.AddAsync(user);
-        }
-
-        public async Task<List<User>> GetAll()
-        {
-            return await _userRepository.GetAllAsync();
         }
     }
 }

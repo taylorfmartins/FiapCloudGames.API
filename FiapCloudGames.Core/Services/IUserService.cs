@@ -5,7 +5,9 @@ namespace FiapCloudGames.Core.Services
 {
     public interface IUserService
     {
-        Task<User> CreateUserAsync(UserCreateDto userDto, string role = "user");
         Task<List<User>> GetAll();
+        Task<User> GetById(int id);
+        Task<User> CreateUserAsync(UserCreateDto userDto, string role = "user");
+        Task<bool> DeleteUserAsync(int id);
     }
 }
