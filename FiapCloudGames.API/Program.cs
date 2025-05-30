@@ -1,4 +1,5 @@
-using FiapCloudGames.API.Endpoints;
+using FiapCloudGames.API.Endpoints.Game;
+using FiapCloudGames.API.Endpoints.User;
 using FiapCloudGames.Application.Sevices;
 using FiapCloudGames.Core.Repositories;
 using FiapCloudGames.Core.Services;

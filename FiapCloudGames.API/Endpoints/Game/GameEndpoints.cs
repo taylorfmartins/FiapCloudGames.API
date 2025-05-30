@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-
-namespace FiapCloudGames.API.Endpoints
+﻿namespace FiapCloudGames.API.Endpoints.Game
 {
     public static class GameEndpoints
     {
