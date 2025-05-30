@@ -1,17 +1,17 @@
 using FiapCloudGames.API.Endpoints;
 using FiapCloudGames.Application.Sevices;
 using FiapCloudGames.Core.Repositories;
+using FiapCloudGames.Infrastructure;
 using FiapCloudGames.Infrastructure.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Registrando o ApplicationDbContext
-//builder.Services.AddDbContext<ApplicationDbContext>(options =>
-//{
-//    options.UseSql builder.Configuration.GetConnectionString("SQLServer");
-
-//    options.UseMongoDB(connectionString, databaseName);
-//});
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("SQLServer"));
+}, ServiceLifetime.Scoped);
 
 #region [DI]
 builder.Services.AddScoped<IUserRepository, UserRepository>();

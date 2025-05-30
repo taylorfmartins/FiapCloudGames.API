@@ -1,6 +1,5 @@
 ﻿using FiapCloudGames.Core.Entities;
 using Microsoft.EntityFrameworkCore;
-using MongoDB.EntityFrameworkCore.Extensions;
 
 namespace FiapCloudGames.Infrastructure
 {
@@ -15,8 +14,7 @@ namespace FiapCloudGames.Infrastructure
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<User>().ToCollection("users");
-            modelBuilder.Entity<User>().ToCollection("games");
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
         }
     }
 }
