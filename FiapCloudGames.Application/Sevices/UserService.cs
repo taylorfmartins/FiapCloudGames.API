@@ -1,25 +1,78 @@
 ﻿using FiapCloudGames.Core.Dtos;
 using FiapCloudGames.Core.Entities;
 using FiapCloudGames.Core.Repositories;
-using FiapCloudGames.Infrastructure;
+using FiapCloudGames.Core.Services;
+using Microsoft.AspNetCore.Http;
+using System.Text.RegularExpressions;
 
 namespace FiapCloudGames.Application.Sevices
 {
-    public class UserService
+    public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
+        private readonly IEncryptionService _encryptionService;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(IUserRepository userRepository, IEncryptionService encryptionService)
         {
             _userRepository = userRepository;
+            _encryptionService = encryptionService;
         }
 
-        public async Task<User> CreateUserAsync(UserCreateDto userDto)
+        private bool IsValidEmail(string email)
         {
+            if (string.IsNullOrEmpty(email))
+                return false;
+
+            // Padrão de email válido
+            string pattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+            return Regex.IsMatch(email, pattern);
+        }
+
+        private bool IsValidPassword(string password)
+        {
+            if (string.IsNullOrEmpty(password))
+                return false;
+
+            // Mínimo 8 caracteres
+            if (password.Length < 8)
+                return false;
+
+            // Deve conter pelo menos uma letra maiúscula
+            if (!Regex.IsMatch(password, "[A-Z]"))
+                return false;
+
+            // Deve conter pelo menos uma letra minúscula
+            if (!Regex.IsMatch(password, "[a-z]"))
+                return false;
+
+            // Deve conter pelo menos um número
+            if (!Regex.IsMatch(password, "[0-9]"))
+                return false;
+
+            // Deve conter pelo menos um caractere especial
+            if (!Regex.IsMatch(password, "[!@#$%^&*(),.?:{}|<>]"))
+                return false;
+
+            return true;
+        }
+
+        public async Task<User> CreateUserAsync(UserCreateDto userDto, string role = "user")
+        {
+            if (string.IsNullOrEmpty(userDto.Name))
+                throw new ArgumentException("Nome do usuário não pode estar em branco");
+
+            if (!IsValidEmail(userDto.Email))
+                throw new ArgumentException("Formato de e-mail inválido");
+
+            if (!IsValidPassword(userDto.Password))
+                throw new ArgumentException("A senha deve ter no mínimo 8 caracteres, incluindo letras maiúsculas, minúsculas, números e caracteres especiais");
+
             User user = new User()
             {
                 Name = userDto.Name,
                 Email = userDto.Email,
+                PasswordHash = _encryptionService.Encrypt(userDto.Password),
+                Role = role
             };
 
             return await _userRepository.AddAsync(user);

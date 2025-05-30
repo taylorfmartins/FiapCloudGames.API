@@ -1,6 +1,5 @@
-﻿using FiapCloudGames.Application.Sevices;
-using FiapCloudGames.Core.Dtos;
-using Microsoft.AspNetCore.Mvc;
+﻿using FiapCloudGames.Core.Dtos;
+using FiapCloudGames.Core.Services;
 
 namespace FiapCloudGames.API.Endpoints
 {
@@ -11,10 +10,10 @@ namespace FiapCloudGames.API.Endpoints
             var userGroup = app.MapGroup("/user")
                 .WithOpenApi();
 
-            userGroup.MapGet("/", (UserService service) => service.GetAll())
+            userGroup.MapGet("/", (IUserService service) => service.GetAll())
                 .WithName("GetAll");
 
-            //userGroup.MapPost("/", (UserService service) => service.AddAs)
+            userGroup.MapPost("/", (UserCreateDto user, IUserService service) => service.CreateUserAsync(user));
 
             return app;
         }
