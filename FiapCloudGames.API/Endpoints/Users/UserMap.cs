@@ -20,7 +20,7 @@ namespace FiapCloudGames.API.Endpoints.User
             groupBuilder.MapPut("/{id:int}", UserEndpoints.Put)
                 .RequireAuthorization();
             
-            groupBuilder.MapPut("/{id:int}/changePassword", UserEndpoints.ChangePassword)
+            groupBuilder.MapPost("/{id:int}/changePassword", UserEndpoints.ChangePassword)
                 .RequireAuthorization();
             
             groupBuilder.MapDelete("/{id:int}", UserEndpoints.Delete)

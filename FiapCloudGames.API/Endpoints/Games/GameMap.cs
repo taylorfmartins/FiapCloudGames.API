@@ -5,8 +5,8 @@
         public static IEndpointRouteBuilder MapGame(this IEndpointRouteBuilder builder)
         {
             var groupBuilder = builder.MapGroup("api/game")
-                .WithTags("Game");
-                //.RequireAuthorization();
+                .WithTags("Game")
+                .RequireAuthorization();
             
             groupBuilder.MapGet("/", GameEndpoints.GetAll);
             groupBuilder.MapGet("/{id:int}", GameEndpoints.GetOne);
