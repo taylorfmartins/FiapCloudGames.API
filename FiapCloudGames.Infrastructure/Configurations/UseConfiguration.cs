@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FiapCloudGames.Infrastructure.Configurations
 {
-    public class UseConfiguration : IEntityTypeConfiguration<User>
+    public class UserConfiguration : IEntityTypeConfiguration<User>
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
@@ -24,7 +24,8 @@ namespace FiapCloudGames.Infrastructure.Configurations
                 .HasMaxLength(100);
 
             builder.Property(x => x.Role)
-                .IsRequired();
+                .IsRequired()
+                .HasMaxLength(20);
         }
     }
 }
