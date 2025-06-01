@@ -4,6 +4,11 @@ namespace FiapCloudGames.Application.Sevices
 {
     public class PasswordHashingService : IPasswordHashingService
     {
+        public PasswordHashingService()
+        {
+            
+        }
+
         public string HashPassword(string password)
         {
             return BCrypt.Net.BCrypt.HashPassword(password);

@@ -1,3 +1,4 @@
+using FiapCloudGames.API.Endpoints.Auth;
 using FiapCloudGames.API.Endpoints.Game;
 using FiapCloudGames.API.Endpoints.User;
 using FiapCloudGames.API.Extensions;
@@ -22,6 +23,8 @@ builder.Services.AddScoped<IGameRepository, GameRepository>();
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IGameService, GameService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<TokenService>();
 
 builder.Services.AddScoped<IPasswordHashingService, PasswordHashingService>();
 #endregion
@@ -44,5 +47,6 @@ app.UseHttpsRedirection();
 
 app.MapGame();
 app.MapUser();
+app.MapAuth();
 
 app.Run();

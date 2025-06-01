@@ -9,12 +9,22 @@ namespace FiapCloudGames.API.Endpoints.User
             var groupBuilder = builder.MapGroup("api/user")
                 .WithTags("User");
 
-            groupBuilder.MapGet("/", UserEndpoints.GetAll);
-            groupBuilder.MapGet("/{id:int}", UserEndpoints.GetOne);
+            groupBuilder.MapGet("/", UserEndpoints.GetAll)
+                .RequireAuthorization("Admin");
+            
+            groupBuilder.MapGet("/{id:int}", UserEndpoints.GetOne)
+                .RequireAuthorization("Admin");
+            
             groupBuilder.MapPost("/", UserEndpoints.Post);
-            groupBuilder.MapPut("/{id:int}", UserEndpoints.Put);
-            groupBuilder.MapPut("/{id:int}/changePassword", UserEndpoints.ChangePassword);
-            groupBuilder.MapDelete("/{id:int}", UserEndpoints.Delete);
+            
+            groupBuilder.MapPut("/{id:int}", UserEndpoints.Put)
+                .RequireAuthorization();
+            
+            groupBuilder.MapPut("/{id:int}/changePassword", UserEndpoints.ChangePassword)
+                .RequireAuthorization();
+            
+            groupBuilder.MapDelete("/{id:int}", UserEndpoints.Delete)
+                .RequireAuthorization("Admin");
 
             return builder;
         }
