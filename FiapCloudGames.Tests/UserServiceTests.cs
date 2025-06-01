@@ -276,5 +276,49 @@ namespace FiapCloudGames.Tests
                 () => _userService.ChangePasswordAsync(1, changePasswordDto));
             Assert.Equal("A senha atual informada não está correta", exception.Message);
         }
+
+        [Fact]
+        public async Task ChangeRole_WithValidRole_ShouldReturnTrue()
+        {
+            // Arrange
+            var userId = 1;
+            var newRole = "Admin";
+            var user = new User { Id = userId, Name = "Test User", Email = "test@test.com", Role = "User" };
+
+            _mockUserRepository.Setup(x => x.GetByIdAsync(userId))
+                .ReturnsAsync(user);
+
+            _mockUserRepository.Setup(x => x.UpdateAsync(It.IsAny<User>()))
+                .ReturnsAsync((User u) => u);
+
+            // Act
+            var result = await _userService.ChangeRole(userId, newRole);
+
+            // Assert
+            Assert.True(result);
+            _mockUserRepository.Verify(x => x.GetByIdAsync(userId), Times.Once);
+            _mockUserRepository.Verify(x => x.UpdateAsync(It.Is<User>(u => 
+                u.Id == userId && 
+                u.Role == newRole)), Times.Once);
+        }
+
+        [Fact]
+        public async Task ChangeRole_WithInvalidRole_ShouldThrowArgumentException()
+        {
+            // Arrange
+            var userId = 1;
+            var invalidRole = "InvalidRole";
+            var user = new User { Id = userId, Name = "Test User", Email = "test@test.com", Role = "User" };
+
+            _mockUserRepository.Setup(x => x.GetByIdAsync(userId))
+                .ReturnsAsync(user);
+
+            // Act & Assert
+            var exception = await Assert.ThrowsAsync<ArgumentException>(() => 
+                _userService.ChangeRole(userId, invalidRole));
+
+            Assert.Equal("O nível de acesso informado não existe", exception.Message);
+            _mockUserRepository.Verify(x => x.UpdateAsync(It.IsAny<User>()), Times.Never);
+        }
     }
 }
