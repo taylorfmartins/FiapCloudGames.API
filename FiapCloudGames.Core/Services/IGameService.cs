@@ -8,7 +8,7 @@ namespace FiapCloudGames.Core.Services
         Task<List<Game>> GetAll();
         Task<Game> GetById(int id);
         Task<Game> CreateGameAsync(GameCreateDto gameDto);
-        Task<Game> UpdateGameAsync(GameUpdateDto gameDto);
+        Task<Game> UpdateGameAsync(int id, GameUpdateDto gameDto);
         Task<bool> DeleteGameAsync(int id);
     }
 }

@@ -13,6 +13,7 @@ namespace FiapCloudGames.API.Endpoints.User
             groupBuilder.MapGet("/{id:int}", UserEndpoints.GetOne);
             groupBuilder.MapPost("/", UserEndpoints.Post);
             groupBuilder.MapPut("/{id:int}", UserEndpoints.Put);
+            groupBuilder.MapPut("/{id:int}/changePassword", UserEndpoints.ChangePassword);
             groupBuilder.MapDelete("/{id:int}", UserEndpoints.Delete);
 
             return builder;

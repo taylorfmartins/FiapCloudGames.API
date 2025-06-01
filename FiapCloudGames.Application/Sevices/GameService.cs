@@ -37,21 +37,20 @@ namespace FiapCloudGames.Application.Sevices
             return await _gameRepository.AddAsync(game);
         }
 
-        public async Task<Game> UpdateGameAsync(GameUpdateDto gameDto)
+        public async Task<Game> UpdateGameAsync(int id, GameUpdateDto gameDto)
         {
+            var game = await _gameRepository.GetByIdAsync(id);
+
             if (string.IsNullOrEmpty(gameDto.Name))
                 throw new ArgumentException("Nome do jogo não pode estar em branco");
 
             if (IsValidDescription(gameDto.Description))
                 throw new ArgumentException("A descrição do jogo precisa ter no mínimo 30 caracteres");
 
-            Game game = new Game()
-            {
-                Name = gameDto.Name,
-                Description = gameDto.Description,
-                ReleasedDate = gameDto.ReleasedDate,
-                Developer = gameDto.Developer
-            };
+            game.Name = gameDto.Name;
+            game.Description = gameDto.Description;
+            game.ReleasedDate = gameDto.ReleasedDate;
+            game.Developer = gameDto.Developer;
 
             return await _gameRepository.UpdateAsync(game);
         }

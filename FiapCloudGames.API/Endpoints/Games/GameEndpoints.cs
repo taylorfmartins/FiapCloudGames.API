@@ -67,7 +67,7 @@ namespace FiapCloudGames.API.Endpoints.Game
         {
             try
             {
-                var updatedGame = await service.UpdateGameAsync(game);
+                var updatedGame = await service.UpdateGameAsync(id, game);
 
                 return Results.Created($"/game/{updatedGame.Id}", updatedGame);
             }

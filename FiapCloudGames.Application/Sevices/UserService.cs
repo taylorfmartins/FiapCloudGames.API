@@ -44,8 +44,10 @@ namespace FiapCloudGames.Application.Sevices
             return await _userRepository.AddAsync(user);
         }
 
-        public async Task<User> UpdateUserAsync(UserUpdateDto userDto)
+        public async Task<User> UpdateUserAsync(int id, UserUpdateDto userDto)
         {
+            var user = await _userRepository.GetByIdAsync(id);
+
             if (string.IsNullOrEmpty(userDto.Name))
                 throw new ArgumentException("Nome do usuário não pode estar em branco");
 
@@ -54,13 +56,31 @@ namespace FiapCloudGames.Application.Sevices
 
             if (!IsValidPassword(userDto.Password))
                 throw new ArgumentException("A senha deve ter no mínimo 8 caracteres, incluindo letras maiúsculas, minúsculas, números e caracteres especiais");
+            
+            user.Name = userDto.Name;
+            user.Email = userDto.Email;
+            user.PasswordHash = _encryptionService.Encrypt(userDto.Password);
 
-            User user = new User()
-            {
-                Name = userDto.Name,
-                Email = userDto.Email,
-                PasswordHash = _encryptionService.Encrypt(userDto.Password)
-            };
+            return await _userRepository.UpdateAsync(user);
+        }
+
+        public async Task<User> ChangePasswordAsync(int id, UserChangePasswordDto userDto)
+        {
+            var user = await _userRepository.GetByIdAsync(id);
+
+            if (string.IsNullOrEmpty(userDto.Password))
+                throw new ArgumentException("A senha atual não pode estar vazia");
+
+            if (string.IsNullOrEmpty(userDto.NewPassword))
+                throw new ArgumentException("A nova senha não pode estar vazia");
+
+            if (!IsValidPassword(userDto.NewPassword))
+                throw new ArgumentException("A senha deve ter no mínimo 8 caracteres, incluindo letras maiúsculas, minúsculas, números e caracteres especiais");
+
+            if (_encryptionService.Decrypt(user.PasswordHash) != userDto.Password)
+                throw new ArgumentException("A senha atual informada não está correta");
+
+            user.PasswordHash = _encryptionService.Encrypt(userDto.NewPassword);
 
             return await _userRepository.UpdateAsync(user);
         }

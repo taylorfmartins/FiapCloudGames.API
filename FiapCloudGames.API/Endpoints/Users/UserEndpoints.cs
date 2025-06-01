@@ -66,9 +66,34 @@ namespace FiapCloudGames.API.Endpoints.User
         {
             try
             {
-                var updatedUser = await service.UpdateUserAsync(user);
+                var updatedUser = await service.UpdateUserAsync(id, user);
 
                 return Results.Created($"/user/{updatedUser.Id}", updatedUser);
+            }
+            catch (ArgumentException e)
+            {
+                return Results.BadRequest(new { error = e.Message });
+            }
+        }
+
+        /// <summary>
+        /// ChangePassword
+        /// </summary>
+        /// <param name="id">Id do Usuário</param>
+        /// <param name="changePassword">Dados e Senha</param>
+        /// <returns>Usuário</returns>
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Core.Entities.User>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public static async Task<IResult> ChangePassword(IUserService service, int id, [FromBody] UserChangePasswordDto changePassword)
+        {
+            try
+            {
+                var updatedUser = await service.ChangePasswordAsync(id, changePassword);
+
+                return Results.Created($"/user/{updatedUser.Id}/changePassword", updatedUser);
             }
             catch (ArgumentException e)
             {
