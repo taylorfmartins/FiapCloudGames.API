@@ -57,6 +57,27 @@ builder.Services.AddSwaggerGen(c =>
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     c.IncludeXmlComments(xmlPath);
 
+    var coreXmlFile = "FiapCloudGames.Core.xml"; // O nome do arquivo XML corresponde ao nome do assembly do projeto
+    var coreXmlPath = Path.Combine(AppContext.BaseDirectory, coreXmlFile);
+    if (File.Exists(coreXmlPath))
+    {
+        c.IncludeXmlComments(coreXmlPath);
+    }
+
+    var applicationXmlFile = "FiapCloudGames.Application.xml"; // O nome do arquivo XML corresponde ao nome do assembly do projeto
+    var applicationXmlPath = Path.Combine(AppContext.BaseDirectory, applicationXmlFile);
+    if (File.Exists(applicationXmlPath))
+    {
+        c.IncludeXmlComments(applicationXmlPath);
+    }
+
+    var repositoryXmlFile = "FiapCloudGames.Application.xml"; // O nome do arquivo XML corresponde ao nome do assembly do projeto
+    var repositoryXmlPath = Path.Combine(AppContext.BaseDirectory, repositoryXmlFile);
+    if (File.Exists(repositoryXmlPath))
+    {
+        c.IncludeXmlComments(repositoryXmlPath);
+    }
+
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,

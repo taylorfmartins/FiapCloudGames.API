@@ -7,16 +7,16 @@ namespace FiapCloudGames.API.Endpoints.Game
     public static class GameEndpoints
     {
         /// <summary>
-        /// Busca todos os Jogos
+        /// GetAll
         /// </summary>
-        /// <returns>Uma lista de Jogos</returns>
+        /// <returns>Lista de Todos Jogos</returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Core.Entities.Game>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public static async Task<IResult> GetAll(IGameService service) => Results.Ok(await service.GetAll());
 
         /// <summary>
-        /// Busca um único Jogo pelo Id
+        /// GetOne
         /// </summary>
         /// <param name="id">Id do Jogo</param>
         /// <returns>Jogo</returns>
@@ -30,10 +30,10 @@ namespace FiapCloudGames.API.Endpoints.Game
         }
 
         /// <summary>
-        /// Cria um novo Jogo
+        /// Create
         /// </summary>
-        /// <param name="game">`REQUIRED` Dados de um novo Jogo</param>
-        /// <returns>Retorno da Criação</returns>
+        /// <param name="game">Jogo</param>
+        /// <returns>Jogo</returns>
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(IEnumerable<Core.Entities.Game>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
@@ -53,12 +53,12 @@ namespace FiapCloudGames.API.Endpoints.Game
         }
 
         /// <summary>
-        /// Modifica um Jogo existente
+        /// Update
         /// </summary>
-        /// <param name="id">Id do Game a ser modificado</param>
-        /// <param name="game">Jogo atualizado</param>
-        /// <returns>Ok or NotFound</returns>
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        /// <param name="id">Id do Game</param>
+        /// <param name="game">Dadps Atualizados</param>
+        /// <returns>Jogo</returns>
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Core.Entities.Game>))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
@@ -78,9 +78,9 @@ namespace FiapCloudGames.API.Endpoints.Game
         }
 
         /// <summary>
-        /// Deleta um Jogo
+        /// Delete
         /// </summary>
-        /// <param name="id">Id do Jogo a ser deletado</param>
+        /// <param name="id">Id do Jogo</param>
         /// <returns>Ok or NotFound</returns>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

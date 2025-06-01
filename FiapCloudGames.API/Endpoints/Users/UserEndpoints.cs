@@ -8,19 +8,19 @@ namespace FiapCloudGames.API.Endpoints.User
     {
 
         /// <summary>
-        /// Busca todos os Usuário
+        /// GetAll
         /// </summary>
-        /// <returns>Uma lista de Usuários</returns>
+        /// <returns>Lista de Todos Usuários</returns>
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Core.Entities.User>))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public static async Task<IResult> GetAll(IUserService service) => Results.Ok(await service.GetAll());
 
         /// <summary>
-        /// Busca um único Usuário pelo Id
+        /// GetOne
         /// </summary>
         /// <param name="id">Id do Usuário</param>
         /// <returns>Usuário</returns>
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Core.Entities.User))]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Core.Entities.User>))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public static async Task<IResult> GetOne(IUserService service, int id)
@@ -29,11 +29,11 @@ namespace FiapCloudGames.API.Endpoints.User
         }
 
         /// <summary>
-        /// Cria um novo Usuário
+        /// Create
         /// </summary>
-        /// <param name="user">`REQUIRED` Dados de um novo Usuário</param>
-        /// <returns>Retorno da Criação</returns>
-        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(int))]
+        /// <param name="user">Usuário</param>
+        /// <returns>Usuário</returns>
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(IEnumerable<Core.Entities.User>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -52,12 +52,12 @@ namespace FiapCloudGames.API.Endpoints.User
         }
 
         /// <summary>
-        /// Modifica um Usuário existente
+        /// Update
         /// </summary>
-        /// <param name="id">Id do Usuário a ser modificado</param>
-        /// <param name="user">Usuário atualizado</param>
-        /// <returns>Ok or NotFound</returns>
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        /// <param name="id">Id do Usuário</param>
+        /// <param name="user">Novos dados</param>
+        /// <returns>Usuário</returns>
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Core.Entities.User>))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
@@ -77,9 +77,9 @@ namespace FiapCloudGames.API.Endpoints.User
         }
 
         /// <summary>
-        /// Deleta um Usuário
+        /// Delete
         /// </summary>
-        /// <param name="id">Id do Usuário a ser deletado</param>
+        /// <param name="id">Id do Usuário</param>
         /// <returns>Ok or NotFound</returns>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
