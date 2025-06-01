@@ -27,6 +27,9 @@ namespace FiapCloudGames.Application.Sevices
             if (string.IsNullOrEmpty(userDto.Name))
                 throw new ArgumentException("Nome do usuário não pode estar em branco");
 
+            if (userDto.Name.Equals(userDto.Email, StringComparison.OrdinalIgnoreCase))
+                throw new ArgumentException("Nome do usuário não pode ser igual ao e-mail");
+
             if (!IsValidEmail(userDto.Email))
                 throw new ArgumentException("Formato de e-mail inválido");
 
@@ -90,7 +93,7 @@ namespace FiapCloudGames.Application.Sevices
             return await _userRepository.DeleteAsync(id);
         }
 
-        private bool IsValidEmail(string email)
+        public bool IsValidEmail(string email)
         {
             if (string.IsNullOrEmpty(email))
                 return false;
@@ -100,7 +103,7 @@ namespace FiapCloudGames.Application.Sevices
             return Regex.IsMatch(email, pattern);
         }
 
-        private bool IsValidPassword(string password)
+        public bool IsValidPassword(string password)
         {
             if (string.IsNullOrEmpty(password))
                 return false;

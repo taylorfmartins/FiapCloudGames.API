@@ -23,7 +23,7 @@ namespace FiapCloudGames.Application.Sevices
             if (string.IsNullOrEmpty(gameDto.Name))
                 throw new ArgumentException("Nome do jogo não pode estar em branco");
 
-            if (IsValidDescription(gameDto.Description))
+            if (!IsValidDescription(gameDto.Description))
                 throw new ArgumentException("A descrição do jogo precisa ter no mínimo 30 caracteres");
 
             Game game = new Game()
@@ -44,7 +44,7 @@ namespace FiapCloudGames.Application.Sevices
             if (string.IsNullOrEmpty(gameDto.Name))
                 throw new ArgumentException("Nome do jogo não pode estar em branco");
 
-            if (IsValidDescription(gameDto.Description))
+            if (!IsValidDescription(gameDto.Description))
                 throw new ArgumentException("A descrição do jogo precisa ter no mínimo 30 caracteres");
 
             game.Name = gameDto.Name;
