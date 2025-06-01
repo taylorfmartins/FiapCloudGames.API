@@ -7,12 +7,12 @@ namespace FiapCloudGames.Application.Sevices
     public class AuthService : IAuthService
     {
         private readonly IUserRepository _userRepository;
-        private readonly EncryptionService _encryptionService;
+        private readonly IPasswordHashingService _passwordHashingService;
 
-        public AuthService(IUserRepository userRepository, EncryptionService encryptionService)
+        public AuthService(IUserRepository userRepository, IPasswordHashingService passwordHashingService)
         {
             _userRepository = userRepository;
-            _encryptionService = encryptionService;
+            _passwordHashingService = passwordHashingService;
         }
 
         public async Task<User> AuthenticateAsync(string email, string password)
@@ -23,10 +23,8 @@ namespace FiapCloudGames.Application.Sevices
             {
                 return null;
             }
-
-            var decryptedPassword = _encryptionService.Decrypt(user.PasswordHash);
-
-            if (password == decryptedPassword)
+            
+            if (_passwordHashingService.VerifyPassword(password, user.PasswordHash))
                 return user;
 
             return null;

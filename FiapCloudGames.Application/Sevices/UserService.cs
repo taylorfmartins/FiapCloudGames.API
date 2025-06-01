@@ -10,12 +10,12 @@ namespace FiapCloudGames.Application.Sevices
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
-        private readonly IEncryptionService _encryptionService;
+        private readonly IPasswordHashingService _passwordHashingService;
 
-        public UserService(IUserRepository userRepository, IEncryptionService encryptionService)
+        public UserService(IUserRepository userRepository, IPasswordHashingService passwordHashingService)
         {
             _userRepository = userRepository;
-            _encryptionService = encryptionService;
+            _passwordHashingService = passwordHashingService;
         }
 
         public async Task<List<User>> GetAll() => await _userRepository.GetAllAsync();
@@ -40,7 +40,7 @@ namespace FiapCloudGames.Application.Sevices
             {
                 Name = userDto.Name,
                 Email = userDto.Email,
-                PasswordHash = _encryptionService.Encrypt(userDto.Password),
+                PasswordHash = _passwordHashingService.HashPassword(userDto.Password),
                 Role = role
             };
 
@@ -62,7 +62,7 @@ namespace FiapCloudGames.Application.Sevices
             
             user.Name = userDto.Name;
             user.Email = userDto.Email;
-            user.PasswordHash = _encryptionService.Encrypt(userDto.Password);
+            user.PasswordHash = _passwordHashingService.HashPassword(userDto.Password);
 
             return await _userRepository.UpdateAsync(user);
         }
@@ -80,10 +80,10 @@ namespace FiapCloudGames.Application.Sevices
             if (!IsValidPassword(userDto.NewPassword))
                 throw new ArgumentException("A senha deve ter no mínimo 8 caracteres, incluindo letras maiúsculas, minúsculas, números e caracteres especiais");
 
-            if (_encryptionService.Decrypt(user.PasswordHash) != userDto.Password)
+            if (_passwordHashingService.VerifyPassword(userDto.Password, user.PasswordHash))
                 throw new ArgumentException("A senha atual informada não está correta");
 
-            user.PasswordHash = _encryptionService.Encrypt(userDto.NewPassword);
+            user.PasswordHash = _passwordHashingService.HashPassword(userDto.NewPassword);
 
             return await _userRepository.UpdateAsync(user);
         }

@@ -26,7 +26,7 @@ builder.Services.AddScoped<IGameRepository, GameRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IGameService, GameService>();
 
-builder.Services.AddScoped<IEncryptionService, EncryptionService>();
+builder.Services.AddScoped<IPasswordHashingService, PasswordHashingService>();
 #endregion
 
 // Add services to the container.

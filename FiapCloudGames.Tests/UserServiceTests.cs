@@ -10,17 +10,19 @@ namespace FiapCloudGames.Tests
     public class UserServiceTests
     {
         private readonly Mock<IUserRepository> _mockUserRepository;
-        private readonly Mock<IEncryptionService> _mockEncryptionService;
+        private readonly Mock<IPasswordHashingService> _mockPasswordHashingService;
         private readonly UserService _userService;
 
         public UserServiceTests()
         {
             _mockUserRepository = new Mock<IUserRepository>();
-            _mockEncryptionService = new Mock<IEncryptionService>();
-            // Configurar o mock do IEncryptionService para retornar um valor previsível
-            _mockEncryptionService.Setup(es => es.Encrypt(It.IsAny<string>())).Returns("hashed_password");
+            _mockPasswordHashingService = new Mock<IPasswordHashingService>();
+            
+            // Configurar o mock do IPasswordHashingService para retornar um valor previsível
+            _mockPasswordHashingService.Setup(ps => ps.HashPassword(It.IsAny<string>())).Returns("hashed_password");
+            _mockPasswordHashingService.Setup(ps => ps.VerifyPassword(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
 
-            _userService = new UserService(_mockUserRepository.Object, _mockEncryptionService.Object);
+            _userService = new UserService(_mockUserRepository.Object, _mockPasswordHashingService.Object);
         }
 
         [Fact]
@@ -216,8 +218,8 @@ namespace FiapCloudGames.Tests
             _mockUserRepository.Setup(repo => repo.GetByIdAsync(1))
                              .ReturnsAsync(existingUser);
 
-            _mockEncryptionService.Setup(es => es.Decrypt("old_hash"))
-                                .Returns("OldPassword123!");
+            _mockPasswordHashingService.Setup(ps => ps.VerifyPassword(changePasswordDto.Password, existingUser.PasswordHash))
+                                     .Returns(false);
 
             _mockUserRepository.Setup(repo => repo.UpdateAsync(It.IsAny<User>()))
                              .ReturnsAsync((User u) => u);
@@ -266,8 +268,8 @@ namespace FiapCloudGames.Tests
             _mockUserRepository.Setup(repo => repo.GetByIdAsync(1))
                              .ReturnsAsync(existingUser);
 
-            _mockEncryptionService.Setup(es => es.Decrypt("old_hash"))
-                                .Returns("CorrectPassword123!");
+            _mockPasswordHashingService.Setup(ps => ps.VerifyPassword("old_hash", "CorrectPassword123!"))
+                                .Returns(true);
 
             // Act & Assert
             var exception = await Assert.ThrowsAsync<ArgumentException>(
