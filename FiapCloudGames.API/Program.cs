@@ -6,10 +6,7 @@ using FiapCloudGames.Core.Repositories;
 using FiapCloudGames.Core.Services;
 using FiapCloudGames.Infrastructure;
 using FiapCloudGames.Infrastructure.Repositories;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,36 +29,16 @@ builder.Services.AddScoped<IPasswordHashingService, PasswordHashingService>();
 // Configuração do Swagger
 builder.Services.AddSwaggerConfiguration();
 
-#region [JWT]
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options =>
-{
-    options.RequireHttpsMetadata = false;
-    options.SaveToken = true;
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuer = true,
-        ValidateAudience = false,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
-    };
-});
-
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
-});
-#endregion
+// Configuração do JWT
+builder.Services.AddJwtConfiguration(builder.Configuration);
 
 var app = builder.Build();
 
 // Configuração do Swagger UI
 app.UseSwaggerConfiguration();
+
+// Configuração do JWT
+app.UseJwtConfiguration();
 
 app.UseHttpsRedirection();
 
