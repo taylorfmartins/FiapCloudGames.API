@@ -22,7 +22,10 @@ namespace FiapCloudGames.API.Endpoints.User
             
             groupBuilder.MapPost("/{id:int}/changePassword", UserEndpoints.ChangePassword)
                 .RequireAuthorization();
-            
+
+            groupBuilder.MapPost("/{id:int}/changeRole/{role}", UserEndpoints.ChangeRole)
+                .RequireAuthorization("Admin");
+
             groupBuilder.MapDelete("/{id:int}", UserEndpoints.Delete)
                 .RequireAuthorization("Admin");
 

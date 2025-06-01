@@ -30,7 +30,7 @@ namespace FiapCloudGames.Infrastructure
                     Id = 1,
                     Name = "Admin",
                     Email = "admin@fiap.com.br",
-                    PasswordHash = "AQAAAAEAACcQAAAAELbXp1QrHhX5Y0QxX5Y0QxX5Y0QxX5Y0QxX5Y0QxX5Y0QxX5Y0QxX5Y0QxX5Y0Q==", // Senha: Admin@123
+                    PasswordHash = "$2a$11$5UDUbDUZdohhBRUSVdBK4OJTBNQPxZv1g0czKDT5SyHiDrx3od0ie", // Senha: Admin@123
                     Role = "Admin",
                     CreatedAt = DateTime.UtcNow,
                     UpdatedAt = DateTime.UtcNow

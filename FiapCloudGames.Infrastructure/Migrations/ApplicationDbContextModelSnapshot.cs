@@ -103,7 +103,7 @@ namespace FiapCloudGames.Infrastructure.Migrations
                             CreatedAt = new DateTime(2025, 6, 1, 19, 8, 20, 814, DateTimeKind.Utc).AddTicks(3791),
                             Email = "admin@fiap.com.br",
                             Name = "Admin",
-                            PasswordHash = "AQAAAAEAACcQAAAAELbXp1QrHhX5Y0QxX5Y0QxX5Y0QxX5Y0QxX5Y0QxX5Y0QxX5Y0QxX5Y0QxX5Y0Q==",
+                            PasswordHash = "$2a$11$5UDUbDUZdohhBRUSVdBK4OJTBNQPxZv1g0czKDT5SyHiDrx3od0ie",
                             Role = "Admin",
                             UpdatedAt = new DateTime(2025, 6, 1, 19, 8, 20, 814, DateTimeKind.Utc).AddTicks(3792)
                         });

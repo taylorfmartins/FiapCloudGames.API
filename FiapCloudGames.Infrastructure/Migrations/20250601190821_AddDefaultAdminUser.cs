@@ -14,7 +14,7 @@ namespace FiapCloudGames.Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "CreatedAt", "Email", "Name", "PasswordHash", "Role", "UpdatedAt" },
-                values: new object[] { 1, new DateTime(2025, 6, 1, 19, 8, 20, 814, DateTimeKind.Utc).AddTicks(3791), "admin@fiap.com.br", "Admin", "AQAAAAEAACcQAAAAELbXp1QrHhX5Y0QxX5Y0QxX5Y0QxX5Y0QxX5Y0QxX5Y0QxX5Y0QxX5Y0QxX5Y0Q==", "Admin", new DateTime(2025, 6, 1, 19, 8, 20, 814, DateTimeKind.Utc).AddTicks(3792) });
+                values: new object[] { 1, new DateTime(2025, 6, 1, 19, 8, 20, 814, DateTimeKind.Utc).AddTicks(3791), "admin@fiap.com.br", "Admin", "$2a$11$5UDUbDUZdohhBRUSVdBK4OJTBNQPxZv1g0czKDT5SyHiDrx3od0ie", "Admin", new DateTime(2025, 6, 1, 19, 8, 20, 814, DateTimeKind.Utc).AddTicks(3792) });
         }
 
         /// <inheritdoc />

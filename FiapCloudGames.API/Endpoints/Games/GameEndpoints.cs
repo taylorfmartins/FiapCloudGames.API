@@ -26,7 +26,12 @@ namespace FiapCloudGames.API.Endpoints.Game
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public static async Task<IResult> GetOne(IGameService service, int id)
         {
-            return Results.Ok(await service.GetById(id));
+            var game = await service.GetById(id);
+
+            if (game == null)
+                return Results.NotFound();
+
+            return Results.Ok(game);
         }
 
         /// <summary>

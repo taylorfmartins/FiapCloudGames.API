@@ -10,9 +10,12 @@
             
             groupBuilder.MapGet("/", GameEndpoints.GetAll);
             groupBuilder.MapGet("/{id:int}", GameEndpoints.GetOne);
-            groupBuilder.MapPost("/", GameEndpoints.Post);
-            groupBuilder.MapPut("/{id:int}", GameEndpoints.Put);
-            groupBuilder.MapDelete("/{id:int}", GameEndpoints.Delete);
+            groupBuilder.MapPost("/", GameEndpoints.Post)
+                .RequireAuthorization("Admin");
+            groupBuilder.MapPut("/{id:int}", GameEndpoints.Put)
+                .RequireAuthorization("Admin");
+            groupBuilder.MapDelete("/{id:int}", GameEndpoints.Delete)
+                .RequireAuthorization("Admin");
 
             return builder;
         }

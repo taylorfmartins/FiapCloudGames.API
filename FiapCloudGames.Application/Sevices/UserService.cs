@@ -2,7 +2,6 @@
 using FiapCloudGames.Core.Entities;
 using FiapCloudGames.Core.Repositories;
 using FiapCloudGames.Core.Services;
-using System.Data;
 using System.Text.RegularExpressions;
 
 namespace FiapCloudGames.Application.Sevices
@@ -22,7 +21,7 @@ namespace FiapCloudGames.Application.Sevices
 
         public async Task<User> GetById(int id) => await _userRepository.GetByIdAsync(id);
 
-        public async Task<User> CreateUserAsync(UserCreateDto userDto, string role = "user")
+        public async Task<User> CreateUserAsync(UserCreateDto userDto)
         {
             if (string.IsNullOrEmpty(userDto.Name))
                 throw new ArgumentException("Nome do usuário não pode estar em branco");
@@ -41,7 +40,7 @@ namespace FiapCloudGames.Application.Sevices
                 Name = userDto.Name,
                 Email = userDto.Email,
                 PasswordHash = _passwordHashingService.HashPassword(userDto.Password),
-                Role = role
+                Role = "User"
             };
 
             return await _userRepository.AddAsync(user);
@@ -59,7 +58,7 @@ namespace FiapCloudGames.Application.Sevices
 
             if (!IsValidPassword(userDto.Password))
                 throw new ArgumentException("A senha deve ter no mínimo 8 caracteres, incluindo letras maiúsculas, minúsculas, números e caracteres especiais");
-            
+
             user.Name = userDto.Name;
             user.Email = userDto.Email;
             user.PasswordHash = _passwordHashingService.HashPassword(userDto.Password);
@@ -86,6 +85,20 @@ namespace FiapCloudGames.Application.Sevices
             user.PasswordHash = _passwordHashingService.HashPassword(userDto.NewPassword);
 
             return await _userRepository.UpdateAsync(user);
+        }
+
+        public async Task<bool> ChangeRole(int id, string role)
+        {
+            var user = await _userRepository.GetByIdAsync(id);
+
+            if (!IsValidRole(role))
+                throw new ArgumentException("O nível de acesso informado não existe");
+
+            user.Role = role;
+
+            var updatedUser = await _userRepository.UpdateAsync(user);
+
+            return updatedUser != null;
         }
 
         public async Task<bool> DeleteUserAsync(int id)
@@ -129,6 +142,13 @@ namespace FiapCloudGames.Application.Sevices
                 return false;
 
             return true;
+        }
+
+        public bool IsValidRole(string role)
+        {
+            if (role.Equals("Admin") || role.Equals("User"))
+                return true;
+            return false;
         }
     }
 }

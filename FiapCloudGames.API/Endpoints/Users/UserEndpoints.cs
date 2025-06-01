@@ -68,7 +68,7 @@ namespace FiapCloudGames.API.Endpoints.User
             {
                 var updatedUser = await service.UpdateUserAsync(id, user);
 
-                return Results.Created($"/user/{updatedUser.Id}", updatedUser);
+                return Results.Ok(updatedUser);
             }
             catch (ArgumentException e)
             {
@@ -93,7 +93,32 @@ namespace FiapCloudGames.API.Endpoints.User
             {
                 var updatedUser = await service.ChangePasswordAsync(id, changePassword);
 
-                return Results.Created($"/user/{updatedUser.Id}/changePassword", updatedUser);
+                return Results.Ok(updatedUser);
+            }
+            catch (ArgumentException e)
+            {
+                return Results.BadRequest(new { error = e.Message });
+            }
+        }
+
+        /// <summary>
+        /// ChangePassword
+        /// </summary>
+        /// <param name="id">Id do Usuário</param>
+        /// <param name="role">Admin ou User</param>
+        /// <returns>Ok or NotFound</returns>
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public static async Task<IResult> ChangeRole(IUserService service, int id, string role)
+        {
+            try
+            {
+                var updatedUser = await service.ChangeRole(id, role);
+
+                return Results.NoContent();
             }
             catch (ArgumentException e)
             {
