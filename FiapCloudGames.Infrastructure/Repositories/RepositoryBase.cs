@@ -17,7 +17,7 @@ namespace FiapCloudGames.Infrastructure.Repositories
 
         public async Task<List<T>> GetAllAsync() => await _dbSet.ToListAsync();
 
-        public async Task<T> GetAsync(int id) => await _dbSet.FirstOrDefaultAsync(x => x.Id == id);
+        public async Task<T> GetByIdAsync(int id) => await _dbSet.FirstOrDefaultAsync(x => x.Id == id);
 
         public async Task<T> AddAsync(T entity)
         {
@@ -39,7 +39,7 @@ namespace FiapCloudGames.Infrastructure.Repositories
 
         public async Task<bool> DeleteAsync(int id)
         {
-            var deletedEntity = _dbSet.Remove(await GetAsync(id));
+            var deletedEntity = _dbSet.Remove(await GetByIdAsync(id));
 
             await _context.SaveChangesAsync();
 
