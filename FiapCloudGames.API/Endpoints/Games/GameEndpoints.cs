@@ -34,7 +34,7 @@ namespace FiapCloudGames.API.Endpoints.Game
         /// </summary>
         /// <param name="game">`REQUIRED` Dados de um novo Jogo</param>
         /// <returns>Retorno da Criação</returns>
-        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(int))]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(IEnumerable<Core.Entities.Game>))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

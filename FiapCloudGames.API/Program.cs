@@ -52,6 +52,11 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 
+    // XML de Documentação Gerado e adicionado ao Redoc
+    var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    c.IncludeXmlComments(xmlPath);
+
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,

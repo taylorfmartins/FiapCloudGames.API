@@ -6,7 +6,8 @@ namespace FiapCloudGames.API.Endpoints.User
     {
         public static IEndpointRouteBuilder MapUser(this IEndpointRouteBuilder builder)
         {
-            var groupBuilder = builder.MapGroup("api/user");
+            var groupBuilder = builder.MapGroup("api/user")
+                .WithTags("User");
 
             groupBuilder.MapGet("/", UserEndpoints.GetAll);
             groupBuilder.MapGet("/{id:int}", UserEndpoints.GetOne);

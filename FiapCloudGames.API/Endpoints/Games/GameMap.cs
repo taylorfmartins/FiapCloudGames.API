@@ -4,8 +4,9 @@
     {
         public static IEndpointRouteBuilder MapGame(this IEndpointRouteBuilder builder)
         {
-            var groupBuilder = builder.MapGroup("api/game");
-
+            var groupBuilder = builder.MapGroup("api/game")
+                .WithTags("Game");
+            
             groupBuilder.MapGet("/", GameEndpoints.GetAll);
             groupBuilder.MapGet("/{id:int}", GameEndpoints.GetOne);
             groupBuilder.MapPost("/", GameEndpoints.Post);
