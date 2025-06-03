@@ -102,7 +102,7 @@ namespace FiapCloudGames.API.Endpoints.User
         }
 
         /// <summary>
-        /// ChangePassword
+        /// ChangeRole
         /// </summary>
         /// <param name="id">Id do Usuário</param>
         /// <param name="role">Admin ou User</param>
